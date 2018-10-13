@@ -25,10 +25,20 @@ class RandomPlayer(Player):
 
 
 def beats(one, two):
-    return ((one == 'rock' and two == 'scissors') or
-            (one == 'scissors' and two == 'paper') or
-            (one == 'paper' and two == 'rock'))
+    player1 = 0
+    player2 = 0
+    if one == two:
+        return f"It's a Tie!, score: {player1, player2}"
+    elif ((one == 'rock' and two == 'scissors') or
+                (one == 'scissors' and two == 'paper') or
+                (one == 'paper' and two == 'rock')):
+        player1 +=1
+        return f"Player One wins!, score: {player1, player2}"
+    else: 
+        player2 +=1
+        return f"Player Two wins!, score: {player1, player2}"
 
+    
 
 class Game:
     def __init__(self, p1, p2):
@@ -39,6 +49,7 @@ class Game:
         move1 = self.p1.move()
         move2 = self.p2.move()
         print(f"Player 1: {move1}  Player 2: {move2}")
+        print(f"Result: {beats(move1,move2)}")
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
 
