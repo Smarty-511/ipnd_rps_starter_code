@@ -28,19 +28,11 @@ class RandomPlayer(Player):
 class HumanPlayer(Player):  
     def move(self):
         x=input("Choose your move! ")
-        if x.strip().lower()=='rock':
-            return 'rock'
-        elif x.strip().lower()=='paper':
-            return 'paper'
-        elif x.strip().lower()=='scissors':
-            return 'scissors'
-        else:
-            return 'please provide a valid input'
-        # while x not in moves:
-        #     if x != 'z':
-        #         x = input('Please enter a valid throw: rock, paper, scissors, or z.\n')
+        while x not in moves:
+            if x != 'z':
+                x = input('Please enter a valid throw: rock, paper, scissors, or z.\n')
 
-        # return x
+        return x
 
 class ReflectPlayer(Player):
 
