@@ -4,7 +4,7 @@
 and reports both Player's scores each round."""
 
 moves = ['rock', 'paper', 'scissors']
-
+players = ['random', 'reflect', 'cycle', 'repeat']
 """The Player class is the parent class for all of the Players
 in this game"""
 
@@ -27,13 +27,14 @@ class RandomPlayer(Player):
 
 class HumanPlayer(Player):  
     def move(self):
-        x=input("Choose your move! ")
+        x=input("Choose your move!\n")
         while x not in moves:
             if x != 'z':
-                x = input('Please enter a valid throw: rock, paper, scissors, or z.\n')
+                x = input('Please choose a valid move: rock, paper, scissors, or z\n')
 
-        return x
+        return x.strip().lower()
 
+# This player will learn human's previous move and play it for the next round
 class ReflectPlayer(Player):
 
     def __init__(self):
@@ -49,20 +50,38 @@ class ReflectPlayer(Player):
         self.enemy = self.comp
         self.comp = their_move
         return self.enemy
+        
+# This player will cycle through the provided moves
+class CyclePlayer(Player):
+
+    def __init__(self):
+        self.index = 0
+
+    def move(self):
+        move1 = ''
+        move2 = ''
+        return CyclePlayer.learn(self, move2, move1)
+
+    def learn(self, my_move, their_move):
+        if self.index <2:
+            self.index +=1
+        else:
+            self.index = 0
+            self.cycle = moves[self.index]
+        return self.cycle
 
 def beats(self, one, two):
     if one == two:
-        return f"It's a Tie!, score: {self.score1, self.score2}"
+        return f"It's a Tie!\nHuman Score:{self.score1}     Computer Score: {self.score2}"
     elif ((one == 'rock' and two == 'scissors') or
                 (one == 'scissors' and two == 'paper') or
                 (one == 'paper' and two == 'rock')):
         self.score1 +=1
-        return f"Human wins!, score: {self.score1, self.score2}"
+        return f"Human wins!\nHuman Score:{self.score1}     Computer Score: {self.score2}"
     else: 
         self.score2 +=1
-        return f"Computer wins!, score: {self.score1, self.score2}"
+        return f"Computer wins!\nHuman Score:{self.score1}      Computer Score: {self.score2}"
 
-    
 
 class Game:
 # score1 = human, score2 = computer
@@ -85,10 +104,22 @@ class Game:
         print("Game start!")
         for round in range(3):
             print(f"Round {round}:")
+            PC= self.rules()
+            return PC
             self.play_round()
         print("Game over!")
+    
+    def rules(self):
+        print('Game Rules:\nscissor cuts paper,\npaper covers rock,\nrock crushes scissors')
+        print('Choose one: "rock" --  "paper" -- "scissors"')
+        print('to quit, press z')
+        PC = input('Choose Computer Player!\nEnter "random", "reflect", "repeat", or "cycle"\n')
+        while PC not in players:
+            if PC != "z":
+                print ("Please enter a valid input")
+        return PC.strip().lower()
 
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), ReflectPlayer())
+    game = Game(HumanPlayer(), CyclePlayer())
     game.play_game()
