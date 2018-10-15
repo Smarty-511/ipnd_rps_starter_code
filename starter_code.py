@@ -29,7 +29,8 @@ class HumanPlayer(Player):
         x=input("Choose your move!\n")
         while x not in moves:
             if x != 'z':
-                x = input('Please choose a valid move: rock, paper, scissors, or z\n')
+                x = input('Please choose a valid move: rock, paper, scissors\n')
+
 
         return x.strip().lower()
 
@@ -72,17 +73,11 @@ class CyclePlayer(Player):
         return moves[self.index]
 
 # returns 1 in case of human wins and 0 otherwise
-def beats(self, one, two):
-    if one == two:
-        return f"It's a Tie!\nHuman Score:{self.score1}     Computer Score: {self.score2}"
-    elif ((one == 'rock' and two == 'scissors') or
-                (one == 'scissors' and two == 'paper') or
-                (one == 'paper' and two == 'rock')):
-        self.score1 +=1
-        return f"Human wins!\nHuman Score:{self.score1}     Computer Score: {self.score2}"
-    else: 
-        self.score2 +=1
-        return f"Computer wins!\nHuman Score:{self.score1}      Computer Score: {self.score2}"
+def beats(one, two):
+    return ((one == 'rock' and two == 'scissors') or
+            (one == 'scissors' and two == 'paper') or
+            (one == 'paper' and two == 'rock'))
+
 
 class Game:
 # score1 = human, score2 = computer
@@ -91,16 +86,23 @@ class Game:
         self.p2 = p2
         self.score1 = 0
         self.score2 = 0
-        self.index = 0
+
 
     def play_round(self):
         move1 = self.p1.move()
         move2 = self.p2.move()
         print(f"Human: {move1}  Computer: {move2}")
-        # beats to determine winner of round
-        print(f"Result: {beats(self, move1,move2)}")
+        if move1 == move2:
+            print (f"It's a Tie!\nHuman Score:{self.score1}     Computer Score: {self.score2}")
+        elif beats(move1,move2) ==1:
+            self.score1 +=1
+            print (f"Human wins!\nHuman Score:{self.score1}     Computer Score: {self.score2}")
+        else: 
+            self.score2 +=1
+            print (f"Computer wins!\nHuman Score:{self.score1}      Computer Score: {self.score2}")
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
+
 
     def play_game(self):
         print("Game start!")
@@ -117,15 +119,19 @@ if __name__ == '__main__':
     x = input('Choose Computer Player!\nEnter "random", "reflect", "repeat", or "cycle"\n')
     while x not in ['random', 'reflect', 'cycle', 'repeat']:
         if x != "z":
-            x = input("Please enter a valid input\n") 
+            x = input("Please enter a valid input\n")
+        else: 
+            print("Thank you for playing!")
+            break
     if x == "random":
         game = Game(HumanPlayer(), RandomPlayer())
+        game.play_game()
     elif x == "cycle":
         game = Game(HumanPlayer(), CyclePlayer())
+        game.play_game()
     elif x == "repeat":
         game = Game(HumanPlayer(), Player())
+        game.play_game()
     elif x == "reflect":
         game = Game(HumanPlayer(), ReflectPlayer())             
-
-
-    game.play_game()
+        game.play_game()
