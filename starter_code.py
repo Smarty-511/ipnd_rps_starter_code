@@ -110,6 +110,14 @@ class Game:
             print(f"Round {round}:")
             self.play_round()
         print("Game over!")
+        if self.score1 > self.score2:
+            print("Winner is Human!")
+        elif self.score1 < self.score2: 
+            print("Winner is Computer!")
+        else:
+            print("Its a Tie")
+
+
 
 
 if __name__ == '__main__':
