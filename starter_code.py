@@ -20,8 +20,7 @@ class RandomPlayer(Player):
     def move(self):
         return random.choice(moves)
 
-    def learn(self, my_move, their_move):
-        pass
+
 
 
 class HumanPlayer(Player):
@@ -30,11 +29,10 @@ class HumanPlayer(Player):
         x = input("Choose your move!\n")
         while x not in moves:
             if x != 'z':
-                x = input('Please enter a valid move: rock, paper, scissors\n')
-        return x.strip().lower()
+                x = input('Please enter a valid move: rock, paper, scissors\n').lower().strip()
+        return x
 
-    def learn(self, my_move, their_move):
-        pass
+
 
 
 # This player will learn human's previous move and play it for the next round
@@ -108,9 +106,23 @@ class Game:
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
 
+
+# validates number of rounds input
+    def inputRounds(self, message):
+        while True:
+            try:
+                userInput = int(input(message))       
+            except ValueError:
+                print("Not an integer! Try again.")
+                continue
+            else:
+                return userInput 
+                break 
+
+
     def play_game(self):
         print("Game start!")
-        self.rounds = int(input('How many Rounds you want to play?\n'))
+        self.rounds = self.inputRounds("How many rounds you want to play?\n")
         for round in range(self.rounds):
             print(f"Round {round}:")
             self.play_round()
