@@ -109,15 +109,13 @@ class Game:
 
 # validates number of rounds input
     def inputRounds(self, message):
-        while True:
+        while message != int:
             try:
-                userInput = int(input(message))       
+                userInput = int(input(message)) 
+                return userInput      
             except ValueError:
                 print("Not an integer! Try again.")
-                continue
-            else:
-                return userInput 
-                break 
+
 
 
     def play_game(self):
@@ -134,11 +132,12 @@ class Game:
         else:
             print("Its a Tie")
 
-
-if __name__ == '__main__':
+def game_rules():
     print('Game Rules:\nscissors cuts paper')
     print('paper covers rock\nrock crushes scissors')
     print('to quit, press z')
+if __name__ == '__main__':
+    game_rules()
     print('Choose Computer Player!')
     x = input('Enter "random", "reflect", "cycle", "repeat"\n').lower().strip()
     while x not in ['random', 'reflect', 'cycle', 'repeat']:
